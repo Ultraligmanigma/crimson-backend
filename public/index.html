@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crimson App Debug</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+    #output { white-space: pre-wrap; background: #fff; padding: 15px; border: 1px solid #ccc; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Crimson App Debug</h1>
+  <div id="output">Prüfe Backend-Status...</div>
+  <script>
+    const output = document.getElementById('output');
+    function log(msg, isError=false) {
+      output.textContent += (isError ? '[FEHLER] ' : '[INFO] ') + msg + '\n';
+      if(isError) console.error(msg); else console.log(msg);
+    }
+    async function checkBackend() {
+      log('Starte Backend-Status-Prüfung...');
+      try {
+        const res = await fetch('/status');
+        if(!res.ok) throw new Error(`HTTP-Fehler: ${res.status}`);
+        const data = await res.json();
+        log('Backend erreichbar ✅\n' + JSON.stringify(data, null, 2));
+      } catch(e) { log(e.message, true); }
+    }
+    window.addEventListener('DOMContentLoaded', checkBackend);
+  </script>
+</body>
+</html>
