@@ -23,7 +23,7 @@
     async function checkBackend() {
       log('Starte Backend‑Status‑Prüfung...');
       try {
-        const res = await fetch('/status');
+        const res = await fetch('https://crimson-backend-production-0be4.up.railway.app');
         if (!res.ok) throw new Error(`HTTP‑Fehler: ${res.status}`);
         const data = await res.json();
         log('Backend erreichbar ✅\n' + JSON.stringify(data, null, 2));
